@@ -28,10 +28,11 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // user login 登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
+      // 在new Promise中，通过login调用了src\api的login.js中的login方法
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)

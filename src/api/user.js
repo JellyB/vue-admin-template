@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 
 export function login(data) {
+  // 该方法中return request，显然调用了第一行import request对应的文件中的方法
   return request({
     url: '/vue-admin-template/user/login',
     method: 'post',

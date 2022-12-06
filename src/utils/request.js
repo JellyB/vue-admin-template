@@ -5,12 +5,15 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
+  // 其指向了 .env.development 中的 VUE_APP_BASE_API
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
 
-// request interceptor
+// request interceptor 拦截器
+// 该拦截器主要是在有 request 请求时，如果在 store 中存储有 token 则在 header 中携带上 X-Token，实际上直接返回 config 即可
+// 然后再登录完成后，访问其他页面的时候带上 token 访问
 service.interceptors.request.use(
   config => {
     // do something before request is sent
@@ -19,6 +22,7 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
+      // 让每个请求携带自定义 token, 根据实际情况自行修改
       config.headers['X-Token'] = getToken()
     }
     return config
@@ -41,6 +45,7 @@ service.interceptors.response.use(
    * Determine the request status by custom code
    * Here is just an example
    * You can also judge the status by HTTP Status Code
+   * 用于在请求完成后，后台返回的消息处理
    */
   response => {
     const res = response.data
